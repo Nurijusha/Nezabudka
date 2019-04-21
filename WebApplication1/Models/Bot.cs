@@ -24,7 +24,7 @@ namespace WebApplication1
 
             commandsList = new List<Command>();
             commandsList.Add(new StartCommand());
-            commandsList.Add(new HelloCommand());
+            commandsList.Add(new DescriptionBotCommand());
             //TODO: Add more commands
 
             botClient = new TelegramBotClient(AppSettings.Key);
