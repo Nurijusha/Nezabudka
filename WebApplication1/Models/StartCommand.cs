@@ -28,7 +28,7 @@ namespace WebApplication1.Models.Commands
     public class DescriptionBotCommand : Command
     {
         private List<string> various = new List<string>() {"Что ты умеешь?", "что умеешь?", @"/description", "расскажи о себе" };
-        public override string Name => various.FirstOrDefault();
+        public override string Name => "Что ты умеешь?";
 
         public override bool Contains(Message message)
         {
