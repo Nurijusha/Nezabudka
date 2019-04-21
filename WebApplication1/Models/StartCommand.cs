@@ -22,7 +22,7 @@ namespace WebApplication1.Models.Commands
         public override async Task Execute(Message message, TelegramBotClient botClient)
         {
             var chatId = message.Chat.Id;
-            await botClient.SendTextMessageAsync(chatId, "Привет!", parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown);
+            await botClient.SendTextMessageAsync(chatId, "Привет! Спроси у меня, что я умею!", parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown);
         }
     }
 
@@ -36,8 +36,7 @@ namespace WebApplication1.Models.Commands
             if (message.Type != Telegram.Bot.Types.Enums.MessageType.Text)
                 return false;
 
-            //return message.Text.Contains(this.Name);
-            return message.Text.Contains(various.Where(x => x == message.Text).First());
+            return message.Text.Contains(various.Where(x => x == message.Text.ToLower()).First());
         }
 
         public override async Task Execute(Message message, TelegramBotClient botClient)
