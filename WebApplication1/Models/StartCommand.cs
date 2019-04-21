@@ -38,7 +38,7 @@ namespace WebApplication1.Models.Commands
         public override async Task Execute(Message message, TelegramBotClient botClient)
         {
             var chatId = message.Chat.Id;
-            await botClient.SendTextMessageAsync(chatId, "Hello I'm ASP.NET Core Bot", parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown);
+            await botClient.SendTextMessageAsync(chatId, "Hello", parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown);
         }
     }
 }
