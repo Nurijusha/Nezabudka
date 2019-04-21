@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using System.Linq
+using System.Linq;
 using System.Collections.Generic;
 
 namespace WebApplication1.Models.Commands
