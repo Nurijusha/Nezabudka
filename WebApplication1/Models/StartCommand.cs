@@ -37,7 +37,7 @@ namespace WebApplication1.Models.Commands
                 return false;
 
             //return message.Text.Contains(this.Name);
-            return message.Text.Contains(various.Where(x => x == message.Text.ToLower()).First());
+            return message.Text.Contains(various.Where(x => x == message.Text).First());
         }
 
         public override async Task Execute(Message message, TelegramBotClient botClient)
