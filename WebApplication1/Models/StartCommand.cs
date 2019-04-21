@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using System.Linq
+using System.Collections.Generic;
 
 namespace WebApplication1.Models.Commands
 {
@@ -25,7 +27,8 @@ namespace WebApplication1.Models.Commands
 
     public class DescriptionBotCommand : Command
     {
-        public override string Name => @"Что ты умеешь?";
+        private List<string> various = new List<string>() {"Что ты умеешь?", "что умеешь?", @"/description", "расскажи о себе" };
+        public override string Name => various.FirstOrDefault();
 
         public override bool Contains(Message message)
         {
