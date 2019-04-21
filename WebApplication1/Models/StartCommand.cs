@@ -35,7 +35,8 @@ namespace WebApplication1.Models.Commands
             if (message.Type != Telegram.Bot.Types.Enums.MessageType.Text)
                 return false;
 
-            return message.Text.Contains(this.Name);
+            //return message.Text.Contains(this.Name);
+            return message.Text.Contains(various.Where(x => x == message.Text).First());
         }
 
         public override async Task Execute(Message message, TelegramBotClient botClient)
