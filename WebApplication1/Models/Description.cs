@@ -23,7 +23,7 @@ namespace NezabudkaHelperBot.Models.Commands
         public override async Task Execute(Message message, TelegramBotClient botClient)
         {
             var chatId = message.Chat.Id;
-            await botClient.SendTextMessageAsync(chatId, "Я пока ничего не умею :(", parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown);
+            await botClient.SendTextMessageAsync(chatId, "Я пока ничего не умею :(");
         }
     }
 }
