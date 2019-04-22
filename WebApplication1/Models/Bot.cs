@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
-using WebApplication1.Models;
-using WebApplication1.Models.Commands;
+using NezabudkaHelperBot.Models;
+using NezabudkaHelperBot.Models.Commands;
 
-namespace WebApplication1
+namespace NezabudkaHelperBot
 {
     public class Bot
     {
@@ -23,9 +23,8 @@ namespace WebApplication1
             }
 
             commandsList = new List<Command>();
-            commandsList.Add(new StartCommand());
-            commandsList.Add(new Description());
-            //TODO: Add more commands
+            commandsList.Add(new HelloCommands());
+            commandsList.Add(new DescriptionCommands());
 
             botClient = new TelegramBotClient(AppSettings.Key);
             string hook = string.Format(AppSettings.Url, "api/message/update");

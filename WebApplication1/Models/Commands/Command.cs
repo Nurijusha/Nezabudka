@@ -2,7 +2,7 @@
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace WebApplication1.Models.Commands
+namespace NezabudkaHelperBot.Models.Commands
 {
     public abstract class Command
     {

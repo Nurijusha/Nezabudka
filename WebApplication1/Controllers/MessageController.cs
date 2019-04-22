@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Telegram.Bot.Types;
-using WebApplication1.Models;
+using NezabudkaHelperBot.Models;
 
-namespace WebApplication1.Controllers
+namespace NezabudkaHelperBot.Controllers
 {
     [Route("api/message/update")]
     public class MessageController : Controller
