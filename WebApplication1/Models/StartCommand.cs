@@ -16,7 +16,7 @@ namespace NezabudkaHelperBot.Models.Commands
             if (message.Type != Telegram.Bot.Types.Enums.MessageType.Text)
                 return false;
 
-            return various.Where(x => x == message.Text).Any();
+            return various.Where(x => x == message.Text.TrimEnd(new char[] { '!', '.' }).ToLower()).Any();
         }
 
         public override async Task Execute(Message message, TelegramBotClient botClient)
