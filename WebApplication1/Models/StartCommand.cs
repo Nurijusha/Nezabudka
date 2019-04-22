@@ -8,7 +8,7 @@ namespace NezabudkaHelperBot.Models.Commands
 {
     public class HelloCommands : Command
     {
-        //private List<string> various = new List<string>() { "привет", "хей", "hello", @"/start" ,"приветик", "здравствуй", "ну здравствуй", "здравствуйте", "однако, здравствуйте", "здарова","приветули"};
+        private List<string> various = new List<string>() { "привет", "хей", "hello", @"/start" ,"приветик", "здравствуй", "ну здравствуй", "здравствуйте", "однако, здравствуйте", "здарова","приветули"};
         public override string Name => @"привет";
 
         public override bool Contains(Message message)
@@ -16,7 +16,7 @@ namespace NezabudkaHelperBot.Models.Commands
             if (message.Type != Telegram.Bot.Types.Enums.MessageType.Text)
                 return false;
 
-            return message.Text.Contains(this.Name);
+            return various.Where(x => x == message.Text).Any();
         }
 
         public override async Task Execute(Message message, TelegramBotClient botClient)
