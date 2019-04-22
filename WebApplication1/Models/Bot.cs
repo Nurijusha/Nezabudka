@@ -23,7 +23,7 @@ namespace NezabudkaHelperBot
             }
 
             commandsList = new List<Command>();
-            //commandsList.Add(new HelloCommands());
+            commandsList.Add(new HelloCommands());
             commandsList.Add(new DescriptionCommands());
 
             botClient = new TelegramBotClient(AppSettings.Key);
