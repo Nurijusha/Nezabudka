@@ -9,7 +9,7 @@ namespace NezabudkaHelperBot.Models.Commands
     public class HelloCommands : Command
     {
         private List<string> various = new List<string>() { "привет", "хей", "hello", @"/start" ,"приветик", "здравствуй", "ну здравствуй", "здравствуйте", "однако, здравствуйте", "здарова","приветули"};
-        public override string Name => @"привет";
+        public override string Name => @"/start";
 
         public override bool Contains(Message message)
         {

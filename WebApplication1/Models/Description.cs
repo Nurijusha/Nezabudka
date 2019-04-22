@@ -9,8 +9,8 @@ namespace NezabudkaHelperBot.Models.Commands
 {
     public class DescriptionCommands : Command
     {
-        private List<string> various = new List<string>() { "что ты умеешь", "что умеешь", @"/description", "расскажи о себе" , "че умеешь"};
-        public override string Name => @"что ты умеешь?";
+        private List<string> various = new List<string>() { "что ты умеешь?", "что умеешь?", @"/description", "расскажи о себе" , "че умеешь?"};
+        public override string Name => @"/description";
 
         public override bool Contains(Message message)
         {
