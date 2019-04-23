@@ -23,8 +23,12 @@ namespace NezabudkaHelperBot.Models.Commands
         {
             if (message[message.Length - 1] == '.')
                 message.Remove(message.Length - 1);
-            var splitedMessade = message.Split(": ")[1].Split(" - ");
-            var splitedDate = splitedMessade[0].Split(' ', ':');
+            var splitedMessade = message.Split(':')[1]
+                .Trim()
+                .Split('-')
+                .Select(x => x.Trim())
+                .ToArray();
+            var splitedDate = splitedMessade[0].Split(' ', '.');
             var dateArray = splitedDate.Select(x => int.Parse(x)).ToArray();
             var date = new DateTime(dateArray[2], dateArray[1], dateArray[0], dateArray[3], dateArray[4], 0);
             return new Tuple<string, DateTime>(splitedMessade[1], date);
