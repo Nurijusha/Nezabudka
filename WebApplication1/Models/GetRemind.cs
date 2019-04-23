@@ -13,6 +13,8 @@ namespace NezabudkaHelperBot.Models.Commands
 
         public override bool Contains(Message message)
         {
+            if (message.Type != Telegram.Bot.Types.Enums.MessageType.Text)
+                return false;
             return message.Text == "Выведи последнее напоминание";
         }
 
