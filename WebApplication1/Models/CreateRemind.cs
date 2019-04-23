@@ -16,7 +16,7 @@ namespace NezabudkaHelperBot.Models.Commands
         {
             if (message.Type != Telegram.Bot.Types.Enums.MessageType.Text)
                 return false;
-            return various.Where(x => message.Text.ToLower().Contains(x)).Any();
+            return various.Where(x => message.Text.Contains(x)).Any();
         }
 
         public override async Task Execute(Message message, TelegramBotClient botClient)
