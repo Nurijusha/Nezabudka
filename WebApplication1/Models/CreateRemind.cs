@@ -22,7 +22,7 @@ namespace NezabudkaHelperBot.Models.Commands
         public override async Task Execute(Message message, TelegramBotClient botClient)
         {
             var chatId = message.Chat.Id;
-            await botClient.SendTextMessageAsync(chatId, @"Хорошо. Напишите время и событие в формате HH:MI - <событие>.");
+            await botClient.SendTextMessageAsync(chatId, @"Хорошо. Напишите время и событие в формате DD:MM:YYYY HH:MI - <событие>.");
         }
     }
 }
