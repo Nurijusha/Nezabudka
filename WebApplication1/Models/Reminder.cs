@@ -35,7 +35,7 @@ namespace NezabudkaHelperBot.Models.Commands
     {
         public override string Name => "";
 
-        public static List<Remind> AllReminds { get; set; }
+        public static List<Remind> AllReminds = new List<Remind>();
 
         public override bool Contains(Message message)
         {
