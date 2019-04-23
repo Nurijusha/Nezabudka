@@ -54,6 +54,7 @@ namespace NezabudkaHelperBot.Models.Commands
             {
                 var chatId = message.Chat.Id;
                 await botClient.SendTextMessageAsync(chatId, @"Неверный формат сообщения. Если вы хотите создать напоминание, напишите время и событие в формате <Создать напоминание: DD.MM.YYYY HH.MI - <событие>>.");
+                return;
             }
             var remind = new Remind(message.Text);
             AllReminds.Add(remind);
