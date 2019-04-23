@@ -11,29 +11,53 @@ namespace NezabudkaHelperBot.Models.Commands
     {
         public string Event { get; }
         public DateTime Date { get; }
+
         public Remind(string message)
         {
-            var splitedMessade = message.Split(" - ");
-            Event = splitedMessade[1];
+            var remind = SplitMessage(message);
+            Event = remind.Item1;
+            Date = remind.Item2;
+        }
+
+        public static Tuple<string, DateTime> SplitMessage(string message)
+        {
+            if (message[message.Length - 1] == '.')
+                message.Remove(message.Length - 1);
+            var splitedMessade = message.Split(": ")[1].Split(" - ");
             var splitedDate = splitedMessade[0].Split(' ', ':');
             var dateArray = splitedDate.Select(x => int.Parse(x)).ToArray();
-            Date = new DateTime(dateArray[2], dateArray[1], dateArray[0], dateArray[3], dateArray[4], 0);
+            var date = new DateTime(dateArray[2], dateArray[1], dateArray[0], dateArray[3], dateArray[4], 0);
+            return new Tuple<string, DateTime>(splitedMessade[1], date);
         }
     }
 
     public class Reminder : Command
     {
-        private SortedList<Remind, DateTime> AllReminds { get; set; }
         public override string Name => "";
+
+
+        private List<Remind> AllReminds { get; set; }
 
         public override bool Contains(Message message)
         {
-            throw new NotImplementedException();
+            return message.Text.StartsWith("Создать напоминание");
+
         }
 
-        public override Task Execute(Message message, TelegramBotClient client)
+        public override async Task Execute(Message message, TelegramBotClient botClient)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Remind.SplitMessage(message.Text);
+            }
+            catch
+            {
+                var chatId = message.Chat.Id;
+                await botClient.SendTextMessageAsync(chatId, @"Неверный формат сообщения. Если вы хотите создать напоминание, напишите время и событие в формате <Создать напоминание: DD.MM.YYYY HH.MI - <событие>>.");
+            }
+            var remind = new Remind(message.Text);
+            AllReminds.Add(remind);
+            AllReminds.OrderBy(x => x.Date);
         }
     }
 }
