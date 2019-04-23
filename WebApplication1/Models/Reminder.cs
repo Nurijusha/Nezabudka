@@ -61,14 +61,17 @@ namespace NezabudkaHelperBot.Models.Commands
             }
             var remind = new Remind(message.Text);
 
-            if(remind.Date < DateTime.Now)
+            if (remind.Date < DateTime.Now)
             {
                 var chatId = message.Chat.Id;
                 await botClient.SendTextMessageAsync(chatId, @"Данное время истекло!");
                 return;
             }
-            AllReminds.Add(remind);
-            AllReminds.OrderBy(x => x.Date);
+            else
+            {
+                AllReminds.Add(remind);
+                AllReminds.OrderBy(x => x.Date);
+            }
         }
     }
 }
