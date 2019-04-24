@@ -21,6 +21,10 @@ namespace NezabudkaHelperBot.Models.Commands
         public async override Task Execute(Message message, TelegramBotClient botClient)
         {
             var chatId = message.Chat.Id;
+            if (!Reminder.AllReminds.ContainsKey(message.From.Username))
+            {
+                await botClient.SendTextMessageAsync(chatId, @"Список пуст");
+            }
             if (Reminder.AllReminds.Count() == 0)
             {
                 await botClient.SendTextMessageAsync(chatId, @"Список пуст");
