@@ -11,12 +11,14 @@ namespace NezabudkaHelperBot.Models.Commands
     {
         public string Event { get; }
         public DateTime Date { get; }
+        public User User { get; }
 
-        public Remind(string message)
+        public Remind(Message message)
         {
-            var remind = SplitMessage(message);
+            var remind = SplitMessage(message.Text);
             Event = remind.Item1;
             Date = remind.Item2;
+            User = message.From;
         }
 
         public static Tuple<string, DateTime> SplitMessage(string message)
@@ -39,7 +41,7 @@ namespace NezabudkaHelperBot.Models.Commands
     {
         public override string Name => "";
 
-        public static List<Remind> AllReminds = new List<Remind>();
+        public static Dictionary<string, List<Remind>> AllReminds = new Dictionary<string, List<Remind>>();
 
         public override bool Contains(Message message)
         {
@@ -59,7 +61,7 @@ namespace NezabudkaHelperBot.Models.Commands
                 await botClient.SendTextMessageAsync(chatId, @"Неверный формат сообщения. Если вы хотите создать напоминание, напишите время и событие в формате <Создать напоминание: DD.MM.YYYY HH.MI - <событие>>.");
                 return;
             }
-            var remind = new Remind(message.Text);
+            var remind = new Remind(message);
 
             if (remind.Date < DateTime.Now)
             {
@@ -69,8 +71,15 @@ namespace NezabudkaHelperBot.Models.Commands
             }
             else
             {
-                AllReminds.Add(remind);
-                AllReminds.OrderBy(x => x.Date);
+                if (!AllReminds.ContainsKey(remind.User.Username))
+                {
+                    AllReminds.Add(remind.User.Username, new List<Remind>() { remind });
+                }
+                else
+                {
+                    AllReminds[remind.User.Username].Add(remind);
+                }
+                AllReminds[remind.User.Username].OrderBy(x => x.Date);
             }
         }
     }
