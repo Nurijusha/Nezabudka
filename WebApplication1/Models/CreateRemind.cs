@@ -7,7 +7,7 @@ using Telegram.Bot.Types;
 
 namespace NezabudkaHelperBot.Models.Commands
 {
-    public class CreateRemindCommand : Command
+    public class HowToCreateRemindCommand : Command
     {
         private List<string> various = new List<string>() { "установить таймер", "создать напоминание" };
         public override string Name => "";
