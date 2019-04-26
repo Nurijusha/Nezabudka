@@ -41,7 +41,7 @@ namespace NezabudkaHelperBot.Models.Commands
     {
         public override string Name => "";
 
-        public static Dictionary<string, List<Remind>> AllReminds = new Dictionary<string, List<Remind>>();
+        public static Dictionary<User, List<Remind>> AllReminds = new Dictionary<User, List<Remind>>();
 
         public override bool Contains(Message message)
         {
@@ -71,15 +71,15 @@ namespace NezabudkaHelperBot.Models.Commands
             }
             else
             {
-                if (!AllReminds.ContainsKey(remind.User.Username))
+                if (!AllReminds.ContainsKey(remind.User))
                 {
-                    AllReminds.Add(remind.User.Username, new List<Remind>() { remind });
+                    AllReminds.Add(remind.User, new List<Remind>() { remind });
                 }
                 else
                 {
-                    AllReminds[remind.User.Username].Add(remind);
+                    AllReminds[remind.User].Add(remind);
                 }
-                AllReminds[remind.User.Username].OrderBy(x => x.Date);
+                AllReminds[remind.User].OrderBy(x => x.Date);
             }
         }
     }
