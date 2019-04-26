@@ -88,7 +88,7 @@ namespace NezabudkaHelperBot.Models.Commands
                     AllReminds.Add(remind);
                     AllReminds.OrderBy(x => x.Date);
                 }
-                await Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
+                Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
             }
         }
 
@@ -99,10 +99,7 @@ namespace NezabudkaHelperBot.Models.Commands
                 var interval = Allreminds[0].Date - DateTime.Now;
                 Task.Delay(interval, ct)
                     .ContinueWith(x => Send(botClient, Allreminds[0]), ct);
-                if (Allreminds.Count != 0)
-                {
-                    Allreminds.RemoveAt(0);
-                }
+                //Allreminds.RemoveAt(0);
             }
         }
     }
