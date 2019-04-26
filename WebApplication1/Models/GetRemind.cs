@@ -21,17 +21,15 @@ namespace NezabudkaHelperBot.Models.Commands
         public async override Task Execute(Message message, TelegramBotClient botClient)
         {
             var chatId = message.Chat.Id;
-           // var isEmpty = false;
-                if (Reminder.AllReminds.ContainsKey(message.From) || Reminder.AllReminds.Count() == 0)
+                if (Reminder.AllReminds.ContainsKey(message.From) || Reminder.AllReminds[message.From].Count() == 0)
                 {
                     await botClient.SendTextMessageAsync(chatId, @"Список пуст");
                 }
                 else
                 {
-                    var count = Reminder.AllReminds.Count();
+                    var count = Reminder.AllReminds[message.From].Count();
                     var str = "В списке содержится: " + count.ToString();
                     await botClient.SendTextMessageAsync(chatId, str);
-
                 }
         }
     }
