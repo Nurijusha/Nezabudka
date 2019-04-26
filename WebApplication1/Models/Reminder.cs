@@ -88,7 +88,7 @@ namespace NezabudkaHelperBot.Models.Commands
                     AllReminds.Add(remind);
                     AllReminds.OrderBy(x => x.Date);
                 }
-                Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
+                await Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
             }
         }
 
