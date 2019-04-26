@@ -54,9 +54,6 @@ namespace NezabudkaHelperBot.Models.Commands
 
         public override async Task Execute(Message message, TelegramBotClient botClient)
         {
-            var tokenSource = new CancellationTokenSource();
-            var token = tokenSource.Token;
-
             try
             {
                 Remind.SplitMessage(message.Text);
@@ -68,6 +65,8 @@ namespace NezabudkaHelperBot.Models.Commands
                 return;
             }
             var remind = new Remind(message);
+            var tokenSource = new CancellationTokenSource();
+            var token = tokenSource.Token;
             Action<TelegramBotClient, Remind> Send = (client, r) => client.SendTextMessageAsync(r.Message.Chat.Id, r.Event);
 
             if (remind.Date < DateTime.Now)
@@ -88,17 +87,19 @@ namespace NezabudkaHelperBot.Models.Commands
                     AllReminds.Add(remind);
                     AllReminds.OrderBy(x => x.Date);
                 }
-                await Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
+                Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
             }
         }
 
-        private static void SendReminds(List<Remind> Allreminds, CancellationToken ct, TelegramBotClient botClient, Action<TelegramBotClient, Remind> Send)
+        private static void SendReminds(List<Remind> Allreminds, CancellationToken ct, TelegramBotClient botClient, 
+            Action<TelegramBotClient, Remind> Send)
         {
-            while (true)
+            while (AllReminds.Count != 0)
             {
                 var interval = Allreminds[0].Date - DateTime.Now;
                 Task.Delay(interval, ct)
-                    .ContinueWith(x => Send(botClient, Allreminds[0]), ct);
+                    .ContinueWith(x => Send(botClient, Allreminds[0]), ct)
+                    .Wait(ct);
                 //Allreminds.RemoveAt(0);
             }
         }
