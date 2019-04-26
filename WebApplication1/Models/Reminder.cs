@@ -84,7 +84,7 @@ namespace NezabudkaHelperBot.Models.Commands
                 }
                 else
                 {
-                    tokenSource.Cancel();
+                    //tokenSource.Cancel();
                     AllReminds.Add(remind);
                     AllReminds.OrderBy(x => x.Date);
                 }
