@@ -96,8 +96,8 @@ namespace NezabudkaHelperBot.Models.Commands
         {
             while (Allreminds.Count != 0)
             {
-                var interval = Allreminds[0].Date.Ticks - DateTime.Now.Ticks;
-                Task.Delay(TimeSpan.FromSeconds(interval), ct)
+                var interval = Allreminds[0].Date - DateTime.Now;
+                Task.Delay(interval, ct)
                     .ContinueWith(x => Send(botClient, Allreminds[0]), ct);
                 if (Allreminds.Count != 0)
                 {
