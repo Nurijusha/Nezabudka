@@ -94,7 +94,7 @@ namespace NezabudkaHelperBot.Models.Commands
 
         private static void SendReminds(List<Remind> Allreminds, CancellationToken ct, TelegramBotClient botClient, Action<TelegramBotClient, Remind> Send)
         {
-            while (Allreminds.Count != 0)
+            while (true)
             {
                 var interval = Allreminds[0].Date - DateTime.Now;
                 Task.Delay(interval, ct)
