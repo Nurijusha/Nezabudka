@@ -65,12 +65,12 @@ namespace NezabudkaHelperBot.Models.Commands
             var remind = new Remind(message);
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
-            Action<TelegramBotClient, Remind> Send = (client, r) => client.SendTextMessageAsync(r.Message.Chat.Id, r.Event).GetAwaiter().GetResult();
+            Action<TelegramBotClient, Remind> Send = async (client, r) => await client.SendTextMessageAsync(r.Message.Chat.Id, r.Event);
 
             if (remind.Date.CompareTo(DateTime.Now) < 0)
             {
                 var chatId = message.Chat.Id;
-                botClient.SendTextMessageAsync(chatId, @"Данное время истекло!").GetAwaiter().GetResult();
+                await botClient.SendTextMessageAsync(chatId, @"Данное время истекло!");
                 return;
             }
             else
@@ -97,7 +97,13 @@ namespace NezabudkaHelperBot.Models.Commands
             }
         }
 
-        private static void SendReminds(CancellationToken ct, TelegramBotClient botClient, 
+        public async static void SendMessage(TelegramBotClient botClient, Remind remind)
+        {
+            var chatId = remind.Message.Chat.Id;
+            await botClient.SendTextMessageAsync(chatId, remind.Event);
+        }
+
+        public static void SendReminds(CancellationToken ct, TelegramBotClient botClient, 
             Action<TelegramBotClient, Remind> Send)
         {
             while (AllReminds.Count != 0)
