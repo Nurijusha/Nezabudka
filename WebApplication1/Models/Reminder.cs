@@ -79,8 +79,8 @@ namespace NezabudkaHelperBot.Models.Commands
         {
             while (AllReminds.Count != 0)
             {
-                var interval = AllReminds[0].Date - DateTime.Now;
-                Task.Delay(interval, ct)
+                //var interval = AllReminds[0].Date - DateTime.Now;
+                Task.Delay(TimeSpan.Zero, ct)
                     .ContinueWith(x => Send(botClient, AllReminds[0]), ct)
                     .Wait(ct);
                 lock (AllReminds) { AllReminds.RemoveAt(0); }
