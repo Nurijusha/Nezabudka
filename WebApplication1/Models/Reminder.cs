@@ -70,7 +70,7 @@ namespace NezabudkaHelperBot.Models.Commands
             if (remind.Date.CompareTo(DateTime.Now) < 0)
             {
                 var chatId = message.Chat.Id;
-                await botClient.SendTextMessageAsync(chatId, @"Данное время истекло!");
+                botClient.SendTextMessageAsync(chatId, @"Данное время истекло!").GetAwaiter().GetResult();
                 return;
             }
             else
