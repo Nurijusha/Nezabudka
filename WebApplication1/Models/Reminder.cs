@@ -12,7 +12,6 @@ namespace NezabudkaHelperBot.Models.Commands
     {
         public string Event { get; }
         public DateTime Date { get; }
-        public User User { get; }
         public Message Message { get; }
 
         public Remind(Message message)
@@ -106,8 +105,7 @@ namespace NezabudkaHelperBot.Models.Commands
             {
                 var interval = Allreminds[0].Date - DateTime.Now;
                 Task.Delay(interval, ct)
-                    .ContinueWith(x => Send(botClient, Allreminds[0]), ct)
-                    .Wait(ct);
+                    .ContinueWith(x => Send(botClient, Allreminds[0]), ct);
                 lock (AllReminds) { Allreminds.RemoveAt(0); }
             }
         }
