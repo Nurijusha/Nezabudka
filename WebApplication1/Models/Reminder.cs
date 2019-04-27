@@ -56,6 +56,8 @@ namespace NezabudkaHelperBot.Models.Commands
                     {
                         AllReminds.Add(remind);
                     }
+                    Task.Factory.StartNew(() => SendReminds(token, botClient, Send));
+                    return;
                 }
                 else
                 {
