@@ -63,7 +63,7 @@ namespace NezabudkaHelperBot.Models.Commands
                     lock (AllReminds)
                     {
                         AllReminds.Add(remind);
-                        AllReminds.OrderBy(x => x.Date);
+                        AllReminds.OrderBy(x => x.Date).ToList();
                     }
                 }
 #pragma warning disable CS4014 // Так как этот вызов не ожидается, выполнение существующего метода продолжается до завершения вызова
