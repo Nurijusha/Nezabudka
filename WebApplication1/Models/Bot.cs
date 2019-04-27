@@ -27,6 +27,7 @@ namespace NezabudkaHelperBot
             commandsList.Add(new DescriptionCommands());
             commandsList.Add(new HowToCreateRemindCommand());
             commandsList.Add(new Reminder());
+            //commandsList.Add(new SimplyReminder());
             commandsList.Add(new GetRemind());
             botClient = new TelegramBotClient(AppSettings.Key);
             string hook = string.Format(AppSettings.Url, "api/message/update");

@@ -8,36 +8,6 @@ using Telegram.Bot.Types;
 
 namespace NezabudkaHelperBot.Models.Commands
 {
-    public class Remind
-    {
-        public string Event { get; }
-        public DateTime Date { get; }
-        public Message Message { get; }
-
-        public Remind(Message message)
-        {
-            var remind = SplitMessage(message.Text);
-            Event = remind.Item1;
-            Date = remind.Item2;
-            Message = message;
-        }
-
-        public static Tuple<string, DateTime> SplitMessage(string message)
-        {
-            if (message[message.Length - 1] == '.')
-                message.Remove(message.Length - 1);
-            var splitedMessade = message.Split(':')[1]
-                .Trim()
-                .Split('-')
-                .Select(x => x.Trim())
-                .ToArray();
-            var splitedDate = splitedMessade[0].Split(' ', '.');
-            var dateArray = splitedDate.Select(x => int.Parse(x)).ToArray();
-            var date = new DateTime(dateArray[2], dateArray[1], dateArray[0], dateArray[3], dateArray[4], 0);
-            return new Tuple<string, DateTime>(splitedMessade[1], date);
-        }
-    }
-
     public class Reminder : Command
     {
         public override string Name => "";
@@ -65,7 +35,7 @@ namespace NezabudkaHelperBot.Models.Commands
             var remind = new Remind(message);
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
-            Action<TelegramBotClient, Remind> Send = async (client, r) => await client.SendTextMessageAsync(r.Message.Chat.Id, r.Event);
+            Action<TelegramBotClient, Remind> Send = (client, r) => client.SendTextMessageAsync(r.Message.Chat.Id, r.Event).Wait();
 
             if (remind.Date.CompareTo(DateTime.Now) < 0)
             {
@@ -95,12 +65,6 @@ namespace NezabudkaHelperBot.Models.Commands
                 Task.Factory.StartNew(() => SendReminds(token, botClient, Send));
 #pragma warning restore CS4014 // Так как этот вызов не ожидается, выполнение существующего метода продолжается до завершения вызова
             }
-        }
-
-        public async static void SendMessage(TelegramBotClient botClient, Remind remind)
-        {
-            var chatId = remind.Message.Chat.Id;
-            await botClient.SendTextMessageAsync(chatId, remind.Event);
         }
 
         public static void SendReminds(CancellationToken ct, TelegramBotClient botClient, 
