@@ -86,9 +86,9 @@ namespace NezabudkaHelperBot.Models.Commands
                     //    //botClient.SendTextMessageAsync(remind.Message.Chat.Id, "Данное время истекло").GetAwaiter().GetResult();
                     //    //reminds.RemoveAt(0);
                     //    //continue;
-                    //    interval = TimeSpan.Zero;
+                       interval = TimeSpan.Zero;
                    }
-                    interval = TimeSpan.Zero;
+                    //interval = TimeSpan.Zero;
                 Task.Delay(interval, ct)
                     .ContinueWith(x => Send(botClient, remind), ct)
                     .Wait(ct);
