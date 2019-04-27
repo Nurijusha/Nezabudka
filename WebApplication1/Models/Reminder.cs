@@ -67,7 +67,7 @@ namespace NezabudkaHelperBot.Models.Commands
             var remind = new Remind(message);
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
-            Action<TelegramBotClient, Remind> Send = (client, r) => client.SendTextMessageAsync(r.Message.Chat.Id, r.Event);
+            Action<TelegramBotClient, Remind> Send = (client, r) => client.SendTextMessageAsync(r.Message.Chat.Id, r.Event).GetAwaiter().GetResult();
 
             if (remind.Date < DateTime.Now)
             {
@@ -79,15 +79,23 @@ namespace NezabudkaHelperBot.Models.Commands
             {
                 if (AllReminds.Count == 0)
                 {
-                    AllReminds.Add(remind);
+                    lock (AllReminds)
+                    {
+                        AllReminds.Add(remind);
+                    }
                 }
                 else
                 {
-                    //tokenSource.Cancel();
-                    AllReminds.Add(remind);
-                    AllReminds.OrderBy(x => x.Date);
+                    tokenSource.Cancel();
+                    lock (AllReminds)
+                    {
+                        AllReminds.Add(remind);
+                        AllReminds.OrderBy(x => x.Date);
+                    }
                 }
+#pragma warning disable CS4014 // Так как этот вызов не ожидается, выполнение существующего метода продолжается до завершения вызова
                 Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
+#pragma warning restore CS4014 // Так как этот вызов не ожидается, выполнение существующего метода продолжается до завершения вызова
             }
         }
 
@@ -100,7 +108,7 @@ namespace NezabudkaHelperBot.Models.Commands
                 Task.Delay(interval, ct)
                     .ContinueWith(x => Send(botClient, Allreminds[0]), ct)
                     .Wait(ct);
-                //Allreminds.RemoveAt(0);
+                lock (AllReminds) { Allreminds.RemoveAt(0); }
             }
         }
     }
