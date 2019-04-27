@@ -19,7 +19,6 @@ namespace NezabudkaHelperBot.Models.Commands
             var remind = SplitMessage(message.Text);
             Event = remind.Item1;
             Date = remind.Item2;
-            User = message.From;
             Message = message;
         }
 
