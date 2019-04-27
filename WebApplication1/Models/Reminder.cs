@@ -92,21 +92,21 @@ namespace NezabudkaHelperBot.Models.Commands
                     }
                 }
 #pragma warning disable CS4014 // Так как этот вызов не ожидается, выполнение существующего метода продолжается до завершения вызова
-                Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
+                Task.Factory.StartNew(() => SendReminds(token, botClient, Send));
 #pragma warning restore CS4014 // Так как этот вызов не ожидается, выполнение существующего метода продолжается до завершения вызова
             }
         }
 
-        private static void SendReminds(List<Remind> Allreminds, CancellationToken ct, TelegramBotClient botClient, 
+        private static void SendReminds(CancellationToken ct, TelegramBotClient botClient, 
             Action<TelegramBotClient, Remind> Send)
         {
             while (AllReminds.Count != 0)
             {
-                var interval = Allreminds[0].Date - DateTime.Now;
+                var interval = AllReminds[0].Date - DateTime.Now;
                 Task.Delay(interval, ct)
-                    .ContinueWith(x => Send(botClient, Allreminds[0]), ct)
+                    .ContinueWith(x => Send(botClient, AllReminds[0]), ct)
                     .Wait(ct);
-                lock (AllReminds) { Allreminds.RemoveAt(0); }
+                lock (AllReminds) { AllReminds.RemoveAt(0); }
             }
         }
     }
