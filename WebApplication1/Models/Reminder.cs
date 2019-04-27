@@ -41,7 +41,9 @@ namespace NezabudkaHelperBot.Models.Commands
                     await client.SendTextMessageAsync(Id, r.Event);
                 };
 
-            if (remind.Date.CompareTo(DateTime.Now) < 0)
+            if (remind.Date.CompareTo(DateTime.Now) < 0 || 
+                remind.Date.Date == DateTime.Now.Date && (remind.Date.Hour < DateTime.Now.Hour ||
+                    remind.Date.Hour == DateTime.Now.Hour && remind.Date.Minute <= DateTime.Now.Minute))
             {
                 await botClient.SendTextMessageAsync(chatId, @"Данное время истекло!");
                 return;
