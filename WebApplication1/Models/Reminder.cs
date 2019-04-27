@@ -22,24 +22,27 @@ namespace NezabudkaHelperBot.Models.Commands
 
         public override async Task Execute(Message message, TelegramBotClient botClient)
         {
+            var chatId = message.Chat.Id;
             try
             {
                 Remind.SplitMessage(message.Text);
             }
             catch
             {
-                var chatId = message.Chat.Id;
                 await botClient.SendTextMessageAsync(chatId, @"Неверный формат сообщения. Если вы хотите создать напоминание, напишите время и событие в формате <Создать напоминание: DD.MM.YYYY HH.MI - <событие>>.");
                 return;
             }
             var remind = new Remind(message);
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
-            Action<TelegramBotClient, Remind> Send = (client, r) => client.SendTextMessageAsync(r.Message.Chat.Id, r.Event).GetAwaiter().GetResult();
+            Action<TelegramBotClient, Remind> Send = (client, r) =>
+                {
+                    var Id = r.Message.Chat.Id;
+                    client.SendTextMessageAsync(Id, r.Event).GetAwaiter().GetResult();
+                };
 
             if (remind.Date.CompareTo(DateTime.Now) < 0)
             {
-                var chatId = message.Chat.Id;
                 await botClient.SendTextMessageAsync(chatId, @"Данное время истекло!");
                 return;
             }
