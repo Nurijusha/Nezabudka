@@ -35,10 +35,10 @@ namespace NezabudkaHelperBot.Models.Commands
             var remind = new Remind(message);
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
-            Action<TelegramBotClient, Remind> Send = (client, r) =>
+            Action<TelegramBotClient, Remind> Send = async (client, r) =>
                 {
                     var Id = r.Message.Chat.Id;
-                    client.SendTextMessageAsync(Id, r.Event).GetAwaiter().GetResult();
+                    await client.SendTextMessageAsync(Id, r.Event);
                 };
 
             if (remind.Date.CompareTo(DateTime.Now) < 0)
