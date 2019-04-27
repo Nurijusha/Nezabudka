@@ -41,15 +41,15 @@ namespace NezabudkaHelperBot.Models.Commands
                     client.SendTextMessageAsync(Id, r.Event).GetAwaiter().GetResult();//?
                 };
 
-            if (remind.Date.CompareTo(DateTime.Now) < 0 || //?
-                remind.Date.Date == DateTime.Now.Date && (remind.Date.Hour < DateTime.Now.Hour ||
-                    remind.Date.Hour == DateTime.Now.Hour && remind.Date.Minute <= DateTime.Now.Minute))
-            {
-                await botClient.SendTextMessageAsync(chatId, @"Данное время истекло!");
-                return;
-            }
-            else
-            {
+            //if (remind.Date.CompareTo(DateTime.Now) < 0 || //?
+            //    remind.Date.Date == DateTime.Now.Date && (remind.Date.Hour < DateTime.Now.Hour ||
+            //        remind.Date.Hour == DateTime.Now.Hour && remind.Date.Minute <= DateTime.Now.Minute))
+            //{
+            //    await botClient.SendTextMessageAsync(chatId, @"Данное время истекло!");
+            //    return;
+            //}
+           // else
+            //{
                 if (AllReminds.Count == 0)
                 {
                     lock (AllReminds)
@@ -69,21 +69,28 @@ namespace NezabudkaHelperBot.Models.Commands
                     }
                 }
 #pragma warning disable CS4014 // Так как этот вызов не ожидается, выполнение существующего метода продолжается до завершения вызова
-                Task.Factory.StartNew(() => SendReminds(token, botClient, Send));
+                Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
 #pragma warning restore CS4014 // Так как этот вызов не ожидается, выполнение существующего метода продолжается до завершения вызова
-            }
+           // }
         }
 
-        public static void SendReminds(CancellationToken ct, TelegramBotClient botClient, 
+        public static void SendReminds(List<Remind> reminds, CancellationToken ct, TelegramBotClient botClient, 
             Action<TelegramBotClient, Remind> Send)
         {
             while (AllReminds.Count != 0)
             {
-                var interval = AllReminds[0].Date - DateTime.Now;
+                var remind = reminds[0];
+                var interval = reminds[0].Date - DateTime.Now;
+                if (interval.Ticks < 0)
+                {
+                    botClient.SendTextMessageAsync(remind.Message.Chat.Id, "Данное время истекло").GetAwaiter().GetResult();
+                    reminds.RemoveAt(0);
+                    continue;
+                }
                 Task.Delay(interval, ct)
-                    .ContinueWith(x => Send(botClient, AllReminds[0]), ct)
+                    .ContinueWith(x => Send(botClient, remind), ct)
                     .Wait(ct);
-                lock (AllReminds) { AllReminds.RemoveAt(0); }
+                lock (reminds) { reminds.RemoveAt(0); }
             }
         }
     }
