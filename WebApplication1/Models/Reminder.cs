@@ -81,7 +81,7 @@ namespace NezabudkaHelperBot.Models.Commands
             {
                 var remind = reminds[0];
                 var interval = reminds[0].Date - DateTime.Now; //????
-                if (interval.Ticks < 0)
+                if (interval < TimeSpan.Zero)
                    {
                     //    //botClient.SendTextMessageAsync(remind.Message.Chat.Id, "Данное время истекло").GetAwaiter().GetResult();
                     //    //reminds.RemoveAt(0);
