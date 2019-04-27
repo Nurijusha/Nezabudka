@@ -77,7 +77,7 @@ namespace NezabudkaHelperBot.Models.Commands
         public static void SendReminds(List<Remind> reminds, CancellationToken ct, TelegramBotClient botClient, 
             Action<TelegramBotClient, Remind> Send)
         {
-            while (AllReminds.Count != 0)
+            while (reminds.Count != 0)
             {
                 var remind = reminds[0];
                 var interval = reminds[0].Date - DateTime.Now;
@@ -85,9 +85,9 @@ namespace NezabudkaHelperBot.Models.Commands
                 {
                     botClient.SendTextMessageAsync(remind.Message.Chat.Id, "Данное время истекло").GetAwaiter().GetResult();
                     reminds.RemoveAt(0);
-                    continue;
+                    //continue;
                 }
-                Task.Delay(interval, ct)
+                Task.Delay(TimeSpan.Zero, ct)
                     .ContinueWith(x => Send(botClient, remind), ct)
                     .Wait(ct);
                 lock (reminds) { reminds.RemoveAt(0); }
