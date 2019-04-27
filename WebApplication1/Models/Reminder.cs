@@ -67,7 +67,7 @@ namespace NezabudkaHelperBot.Models.Commands
             var token = tokenSource.Token;
             Action<TelegramBotClient, Remind> Send = (client, r) => client.SendTextMessageAsync(r.Message.Chat.Id, r.Event).GetAwaiter().GetResult();
 
-            if (remind.Date < DateTime.Now)
+            if (remind.Date.CompareTo(DateTime.Now) < 0)
             {
                 var chatId = message.Chat.Id;
                 await botClient.SendTextMessageAsync(chatId, @"Данное время истекло!");
