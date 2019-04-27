@@ -46,57 +46,57 @@ namespace Try
             Console.WriteLine((remind.Date.CompareTo(DateTime.Now) < 0 ||
                 remind.Date.Date == DateTime.Now.Date && (remind.Date.Hour < DateTime.Now.Hour ||
                     remind.Date.Hour == DateTime.Now.Hour && remind.Date.Minute <= DateTime.Now.Minute)));
-        //    var tokenSource = new CancellationTokenSource();
-        //    var token = tokenSource.Token;
-        //    //var message = "Создать напоминание: 27.04.2019 15.26 - event";
-        //    //var remind = new Remind(message);
-        //    //Console.WriteLine(remind.Date.CompareTo(DateTime.Now));
-        //    //AllReminds.Add(remind);
-        //    //SendReminds(token);
-        //    while (true)
-        //    {
-        //        Remind newRemind = null;
-        //        try
-        //        {
-        //            newRemind = new Remind(Console.ReadLine());
-        //        }
-        //        catch
-        //        {
-        //            Console.WriteLine("Неверный формат");
-        //        }
-        //        finally
-        //        {
-        //            if (AllReminds.Count == 0)
-        //            {
-        //                lock (AllReminds)
-        //                {
-        //                    AllReminds.Add(newRemind);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                tokenSource.Cancel();
-        //                lock (AllReminds)
-        //                {
-        //                    AllReminds.Add(newRemind);
-        //                    AllReminds.OrderBy(x => x.Date);
-        //                }
-        //            }
-        //            Task.Factory.StartNew(() => SendReminds(token));
-        //        }
-        //    }
-        //}
+            var tokenSource = new CancellationTokenSource();
+            var token = tokenSource.Token;
+            var message = "Создать напоминание: 27.04.2019 15.26 - event";
+            var remind = new Remind(message);
+            Console.WriteLine(remind.Date.CompareTo(DateTime.Now));
+            AllReminds.Add(remind);
+            SendReminds(token);
+            while (true)
+            {
+                Remind newRemind = null;
+                try
+                {
+                    newRemind = new Remind(Console.ReadLine());
+                }
+                catch
+                {
+                    Console.WriteLine("Неверный формат");
+                }
+                finally
+                {
+                    if (AllReminds.Count == 0)
+                    {
+                        lock (AllReminds)
+                        {
+                            AllReminds.Add(newRemind);
+                        }
+                    }
+                    else
+                    {
+                        tokenSource.Cancel();
+                        lock (AllReminds)
+                        {
+                            AllReminds.Add(newRemind);
+                            AllReminds.OrderBy(x => x.Date);
+                        }
+                    }
+                    Task.Factory.StartNew(() => SendReminds(token));
+                }
+            }
+        }
 
-        //public static void SendReminds(CancellationToken ct)
-        //{
-        //    while (AllReminds.Count != 0)
-        //    {
-        //        var interval = AllReminds[0].Date - DateTime.Now;
-        //        Task.Delay(interval, ct)
-        //            .ContinueWith(x => Console.WriteLine("ok"), ct)
-        //            .Wait(ct);
-        //        lock (AllReminds) { AllReminds.RemoveAt(0); }
-        //    }
+        public static void SendReminds(CancellationToken ct)
+        {
+            while (AllReminds.Count != 0)
+            {
+                var interval = AllReminds[0].Date - DateTime.Now;
+                Task.Delay(interval, ct)
+                    .ContinueWith(x => Console.WriteLine("ok"), ct)
+                    .Wait(ct);
+                lock (AllReminds) { AllReminds.RemoveAt(0); }
+            }
         }
     }
 }
