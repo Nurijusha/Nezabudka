@@ -56,8 +56,8 @@ namespace NezabudkaHelperBot.Models.Commands
                     {
                         AllReminds.Add(remind);
                     }
-                    Task.Factory.StartNew(() => SendReminds(token, botClient, Send));
-                    return;
+                    //Task.Factory.StartNew(() => SendReminds(token, botClient, Send));
+                    //return;
                 }
                 else
                 {
@@ -79,8 +79,8 @@ namespace NezabudkaHelperBot.Models.Commands
         {
             while (AllReminds.Count != 0)
             {
-                //var interval = AllReminds[0].Date - DateTime.Now;
-                Task.Delay(TimeSpan.Zero, ct)
+                var interval = AllReminds[0].Date - DateTime.Now;
+                Task.Delay(interval, ct)
                     .ContinueWith(x => Send(botClient, AllReminds[0]), ct)
                     .Wait(ct);
                 lock (AllReminds) { AllReminds.RemoveAt(0); }
