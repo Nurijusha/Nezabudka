@@ -35,13 +35,13 @@ namespace NezabudkaHelperBot.Models.Commands
             var remind = new Remind(message);
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
-            Action<TelegramBotClient, Remind> Send = async (client, r) =>
+            Action<TelegramBotClient, Remind> Send = async (client, r) =>//?
                 {
                     var Id = r.Message.Chat.Id;
                     await client.SendTextMessageAsync(Id, r.Event);
                 };
 
-            if (remind.Date.CompareTo(DateTime.Now) < 0 || 
+            if (remind.Date.CompareTo(DateTime.Now) < 0 || //?
                 remind.Date.Date == DateTime.Now.Date && (remind.Date.Hour < DateTime.Now.Hour ||
                     remind.Date.Hour == DateTime.Now.Hour && remind.Date.Minute <= DateTime.Now.Minute))
             {
@@ -78,9 +78,9 @@ namespace NezabudkaHelperBot.Models.Commands
             while (AllReminds.Count != 0)
             {
                 var interval = AllReminds[0].Date - DateTime.Now;
-                Task.Delay(interval)
+                Task.Delay(interval, ct)
                     .ContinueWith(x => Send(botClient, AllReminds[0]), ct)
-                    .Wait(ct);
+//                    .Wait(ct);
                 lock (AllReminds) { AllReminds.RemoveAt(0); }
             }
         }
