@@ -11,6 +11,7 @@ namespace NezabudkaHelperBot.Models.Commands
     public class Reminder : Command
     {
         private static TimeSpan rusTime = new TimeSpan(3, 0, 0);
+        private static Task task;
         public override string Name => "";
 
         public static SortedList<DateTime, Remind> AllReminds = new SortedList<DateTime, Remind>();
@@ -46,7 +47,6 @@ namespace NezabudkaHelperBot.Models.Commands
                 var Id = r.Message.Chat.Id;
                 client.SendTextMessageAsync(Id, r.Event).GetAwaiter().GetResult();
             };
-            Task task = null;
             if (AllReminds.Count == 0)
             {
                 lock (AllReminds)
