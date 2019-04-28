@@ -38,26 +38,15 @@ namespace NezabudkaHelperBot.Models.Commands
             Action<TelegramBotClient, Remind> Send = (client, r) =>
                 {
                     var Id = r.Message.Chat.Id;
-                    client.SendTextMessageAsync(Id, r.Event).GetAwaiter().GetResult();//?
+                    client.SendTextMessageAsync(Id, r.Event).GetAwaiter().GetResult();
                 };
 
-            //if (remind.Date.CompareTo(DateTime.Now) < 0 || //?
-            //    remind.Date.Date == DateTime.Now.Date && (remind.Date.Hour < DateTime.Now.Hour ||
-            //        remind.Date.Hour == DateTime.Now.Hour && remind.Date.Minute <= DateTime.Now.Minute))
-            //{
-            //    await botClient.SendTextMessageAsync(chatId, @"Данное время истекло!");
-            //    return;
-            //}
-           // else
-            //{
                 if (AllReminds.Count == 0)
                 {
                     lock (AllReminds)
                     {
                         AllReminds.Add(remind);
                     }
-                    //Task.Factory.StartNew(() => SendReminds(token, botClient, Send));
-                    //return;
                 }
                 else
                 {
