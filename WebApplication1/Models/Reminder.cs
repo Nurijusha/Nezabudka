@@ -62,7 +62,7 @@ namespace NezabudkaHelperBot.Models.Commands
                     }
                     tokenSource.Cancel();
                 }
-                Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
+                await Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
         }
 
         public static void SendReminds(SortedList<DateTime, Remind> reminds, CancellationToken ct, TelegramBotClient botClient, 
