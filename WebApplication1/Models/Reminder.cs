@@ -10,6 +10,7 @@ namespace NezabudkaHelperBot.Models.Commands
 {
     public class Reminder : Command
     {
+        private static TimeSpan rusTime = new TimeSpan(3, 0, 0);
         public override string Name => "";
 
         public static List<Remind> AllReminds = new List<Remind>();
@@ -69,7 +70,7 @@ namespace NezabudkaHelperBot.Models.Commands
             while (reminds.Count != 0)
             {
                 var remind = reminds[0];
-                var interval = reminds[0].Date - DateTime.Now; //????
+                var interval = reminds[0].Date - (DateTime.UtcNow + rusTime); //????
                 if (interval < TimeSpan.Zero)
                 {
                     //botClient.SendTextMessageAsync(remind.Message.Chat.Id, "Данное время истекло").GetAwaiter().GetResult();
