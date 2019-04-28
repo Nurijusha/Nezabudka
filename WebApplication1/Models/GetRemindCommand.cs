@@ -7,7 +7,7 @@ using Telegram.Bot.Types;
 
 namespace NezabudkaHelperBot.Models.Commands
 {
-    public class GetRemind : Command
+    public class GetRemindCommand : Command
     {
         public override string Name => "";
 
