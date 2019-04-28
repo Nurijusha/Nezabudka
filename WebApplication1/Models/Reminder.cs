@@ -36,7 +36,7 @@ namespace NezabudkaHelperBot.Models.Commands
             var remind = new Remind(message);
             if (remind.Date < (DateTime.UtcNow + rusTime))
             {
-                await botClient.SendTextMessageAsync(remind.Message.Chat.Id, "Данное время истекло");
+                await botClient.SendTextMessageAsync(chatId, "Данное время истекло");
                 return;
             }
             var tokenSource = new CancellationTokenSource();
