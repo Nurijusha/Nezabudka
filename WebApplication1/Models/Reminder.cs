@@ -47,22 +47,24 @@ namespace NezabudkaHelperBot.Models.Commands
                 client.SendTextMessageAsync(Id, r.Event).GetAwaiter().GetResult();
             };
 
-                if (AllReminds.Count == 0)
+            if (AllReminds.Count == 0)
+            {
+                lock (AllReminds)
                 {
-                    lock (AllReminds)
-                    {
-                        AllReminds.Add(remind.Date, remind);
-                    }
+                    AllReminds.Add(remind.Date, remind);
                 }
-                else
+            }
+            else
+            {
+                lock (AllReminds)
                 {
-                    lock (AllReminds)
-                    {
-                        AllReminds.Add(remind.Date, remind);
-                    }
-                    tokenSource.Cancel();
+                    AllReminds.Add(remind.Date, remind);
                 }
-                Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
+                tokenSource.Cancel();
+                tokenSource = new CancellationTokenSource();
+                token = tokenSource.Token;
+            }
+            Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
         }
 
         public static void SendReminds(SortedList<DateTime, Remind> reminds, CancellationToken ct, TelegramBotClient botClient, 
