@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace NezabudkaHelperBot.Models.Commands
         public string Event { get; }
         public DateTime Date { get; }
         public Message Message { get; }
-
+        
         public Remind(Message message)
         {
             var remind = SplitMessage(message.Text);
@@ -26,15 +27,13 @@ namespace NezabudkaHelperBot.Models.Commands
         {
             if (message[message.Length - 1] == '.')
                 message.Remove(message.Length - 1);
-            var splitedMessade = message.Split(':')[1]
+            var splitedMessage = message.Split(':')[1]
                 .Trim()
                 .Split('-')
                 .Select(x => x.Trim())
                 .ToArray();
-            var splitedDate = splitedMessade[0].Split(' ', '.');
-            var dateArray = splitedDate.Select(x => int.Parse(x)).ToArray();
-            var date = new DateTime(dateArray[2], dateArray[1], dateArray[0], dateArray[3], dateArray[4], 0);
-            return new Tuple<string, DateTime>(splitedMessade[1], date);
+            var date = DateTime.ParseExact(splitedMessage[0], "dd.MM.yyyy HH.mm", CultureInfo.GetCultureInfo("ru-RU"));
+            return new Tuple<string, DateTime>(splitedMessage[1], date);
         }
     }
 
