@@ -88,7 +88,6 @@ namespace NezabudkaHelperBot.Models.Commands
                     //continue;
                     interval = TimeSpan.Zero;
                 }
-                    //interval = TimeSpan.Zero;
                 Task.Delay(interval, ct)
                     .ContinueWith(x => Send(botClient, remind), ct)
                     .Wait(ct);
