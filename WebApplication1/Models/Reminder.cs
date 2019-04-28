@@ -11,7 +11,6 @@ namespace NezabudkaHelperBot.Models.Commands
     public class Reminder : Command
     {
         private static TimeSpan rusTime = new TimeSpan(3, 0, 0);
-        private static Task task;
         public override string Name => "";
 
         public static SortedList<DateTime, Remind> AllReminds = new SortedList<DateTime, Remind>();
@@ -61,9 +60,8 @@ namespace NezabudkaHelperBot.Models.Commands
                     AllReminds.Add(remind.Date, remind);
                 }
                 tokenSource.Cancel();
-                task.Wait();
             }
-            task = Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
+            Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
         }
 
         public static void SendReminds(SortedList<DateTime, Remind> reminds, CancellationToken ct, TelegramBotClient botClient, 
