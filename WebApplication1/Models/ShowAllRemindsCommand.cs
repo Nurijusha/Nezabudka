@@ -29,7 +29,7 @@ namespace NezabudkaHelperBot.Models.Commands
                 var resultStr = new StringBuilder();
                 foreach (var remind in Reminder.AllReminds)
                 {
-                    resultStr.Append(remind.Value.Event);
+                    resultStr.Append(remind.Value.Date.ToString() + " - " + remind.Value.Event);
                     resultStr.Append(Environment.NewLine);
                 }
                 await botClient.SendTextMessageAsync(chatId, resultStr.ToString());
