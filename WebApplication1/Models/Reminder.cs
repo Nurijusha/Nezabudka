@@ -79,7 +79,7 @@ namespace NezabudkaHelperBot.Models.Commands
                 Task.Delay(interval, ct)
                     .ContinueWith(x => Send(botClient, remind.Value), ct)
                     .Wait(ct);
-                lock (reminds) { reminds.RemoveAt(0); }
+                lock (reminds) { reminds.Remove(remind.Key); }
             }
         }
     }
