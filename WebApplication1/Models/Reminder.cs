@@ -10,7 +10,7 @@ namespace NezabudkaHelperBot.Models.Commands
 {
     public class Reminder : Command
     {
-        private static TimeSpan rusTime = new TimeSpan(3, 0, 0);
+        private readonly static TimeSpan rusTime = new TimeSpan(3, 0, 0);
         public override string Name => "";
 
         public static SortedList<DateTime, Remind> AllReminds = new SortedList<DateTime, Remind>();
