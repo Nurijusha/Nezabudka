@@ -15,7 +15,7 @@ namespace NezabudkaHelperBot.Models.Commands
         {
             if (message.Type != Telegram.Bot.Types.Enums.MessageType.Text)
                 return false;
-            return message.Text == "Выведи последнее напоминание";
+            return message.Text == "Выведи количество напоминаний";
         }
 
         public async override Task Execute(Message message, TelegramBotClient botClient)
