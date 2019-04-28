@@ -10,6 +10,8 @@ namespace NezabudkaHelperBot.Models.Commands
 {
     public class Reminder : Command
     {
+        private static CancellationTokenSource tokenSource = new CancellationTokenSource();
+        private static CancellationToken token = tokenSource.Token;
         private readonly static TimeSpan rusTime = new TimeSpan(3, 0, 0);
         public override string Name => "";
 
@@ -39,29 +41,28 @@ namespace NezabudkaHelperBot.Models.Commands
                 await botClient.SendTextMessageAsync(chatId, "Данное время истекло");
                 return;
             }
-            var tokenSource = new CancellationTokenSource();
-            var token = tokenSource.Token;
             Action<TelegramBotClient, Remind> Send = (client, r) =>
             {
                 var Id = r.Message.Chat.Id;
                 client.SendTextMessageAsync(Id, r.Event).GetAwaiter().GetResult();
             };
-            if (AllReminds.Count == 0)
-            {
-                lock (AllReminds)
+
+                if (AllReminds.Count == 0)
                 {
-                    AllReminds.Add(remind.Date, remind);
+                    lock (AllReminds)
+                    {
+                        AllReminds.Add(remind.Date, remind);
+                    }
                 }
-            }
-            else
-            {
-                lock (AllReminds)
+                else
                 {
-                    AllReminds.Add(remind.Date, remind);
+                    lock (AllReminds)
+                    {
+                        AllReminds.Add(remind.Date, remind);
+                    }
+                    tokenSource.Cancel();
                 }
-                tokenSource.Cancel();
-            }
-            Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
+                Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
         }
 
         public static void SendReminds(SortedList<DateTime, Remind> reminds, CancellationToken ct, TelegramBotClient botClient, 
