@@ -19,7 +19,13 @@ namespace NezabudkaHelperBot.Models.Commands
 
         public override async Task Execute(Message message, TelegramBotClient botClient)
         {
+            var listReminds = new SortedList<DateTime, Remind>();
             var chatId = message.Chat.Id;
+            foreach (var remind in Reminder.AllReminds)
+            {
+                if (remind.Value.Message.Chat.Id == chatId)
+                    listReminds.Add(remind.Key, remind.Value);
+            }
             if (Reminder.AllReminds.Count() == 0)
             {
                 await botClient.SendTextMessageAsync(chatId, "Список пуст");
@@ -27,7 +33,7 @@ namespace NezabudkaHelperBot.Models.Commands
             else
             {
                 var resultStr = new StringBuilder();
-                foreach (var remind in Reminder.AllReminds)
+                foreach (var remind in listReminds)
                 {
                     resultStr.Append(remind.Value.Date.ToString() + " - " + remind.Value.Event);
                     resultStr.Append(Environment.NewLine);
