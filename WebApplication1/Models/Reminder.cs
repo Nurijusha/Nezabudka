@@ -64,6 +64,7 @@ namespace NezabudkaHelperBot.Models.Commands
                 tokenSource = new CancellationTokenSource();
                 token = tokenSource.Token;
             }
+            botClient.SendAnimationAsync(chatId, "Напоминание записано!").GetAwaiter().GetResult();
             Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
         }
 
