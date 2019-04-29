@@ -9,7 +9,7 @@ namespace NezabudkaHelperBot.Models.Commands
 {
     public class HowToCreateRemindCommand : Command
     {
-        private List<string> various = new List<string>() { "установить таймер", "создать напоминание" };
+        private List<string> various = new List<string>() { "установить таймер", "создать напоминание", @"/create_notification"};
         public override string Name => "";
 
         public override bool Contains(Message message)
