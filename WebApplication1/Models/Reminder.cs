@@ -53,6 +53,7 @@ namespace NezabudkaHelperBot.Models.Commands
                 {
                     AllReminds.Add(remind.Date, remind);
                 }
+                await botClient.SendAnimationAsync(chatId, "Напоминание записано!");
             }
             else
             {
@@ -60,11 +61,11 @@ namespace NezabudkaHelperBot.Models.Commands
                 {
                     AllReminds.Add(remind.Date, remind);
                 }
+                await botClient.SendAnimationAsync(chatId, "Напоминание записано!");
                 tokenSource.Cancel();
                 tokenSource = new CancellationTokenSource();
                 token = tokenSource.Token;
             }
-            await botClient.SendAnimationAsync(chatId, "Напоминание записано!");
             Task.Factory.StartNew(() => SendReminds(AllReminds, token, botClient, Send));
         }
 
