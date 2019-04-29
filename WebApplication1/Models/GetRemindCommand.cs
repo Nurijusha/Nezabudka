@@ -9,13 +9,15 @@ namespace NezabudkaHelperBot.Models.Commands
 {
     public class GetRemindCommand : Command
     {
+        private List<string> various = new List<string>() { "выведи количество напоминаний", @"/count"};
+
         public override string Name => "";
 
         public override bool Contains(Message message)
         {
             if (message.Type != Telegram.Bot.Types.Enums.MessageType.Text)
                 return false;
-            return message.Text.ToLower().Trim(' ') == "выведи количество напоминаний";
+            return various.Where(x => message.Text.Contains(x)).Any();        
         }
 
         public async override Task Execute(Message message, TelegramBotClient botClient)
