@@ -38,7 +38,7 @@ namespace NezabudkaHelperBot.Models.Commands
             var remind = new Remind(message,botClient);
             if (remind.Date < (DateTime.UtcNow + rusTime))
             {
-                await botClient.SendTextMessageAsync(chatId, "Данное время истекло");
+                await botClient.SendTextMessageAsync(chatId, "Поезд ушел. Введите корректное время!");
                 return;
             }
             Action<TelegramBotClient, Remind> Send = (client, r) =>
