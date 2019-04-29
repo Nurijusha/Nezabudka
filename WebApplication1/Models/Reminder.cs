@@ -12,7 +12,7 @@ namespace NezabudkaHelperBot.Models.Commands
     {
         private static CancellationTokenSource tokenSource = new CancellationTokenSource();
         private static CancellationToken token = tokenSource.Token;
-        public readonly static TimeSpan rusTime = new TimeSpan(3, 0, 0);
+        private readonly static TimeSpan rusTime = new TimeSpan(3, 0, 0);
         public override string Name => "";
 
         public static SortedList<DateTime, Remind> AllReminds = new SortedList<DateTime, Remind>();
@@ -35,10 +35,10 @@ namespace NezabudkaHelperBot.Models.Commands
                 await botClient.SendTextMessageAsync(chatId, @"Неверный формат сообщения. Если вы хотите создать напоминание, напишите время и событие в формате <Создать напоминание: DD.MM.YYYY HH.MI - <событие>>.");
                 return;
             }
-            var remind = new Remind(message,botClient);
+            var remind = new Remind(message);
             if (remind.Date < (DateTime.UtcNow + rusTime))
             {
-                await botClient.SendTextMessageAsync(chatId, "Поезд ушел. Введите корректное время!");
+                await botClient.SendTextMessageAsync(chatId, "Данное время истекло");
                 return;
             }
             Action<TelegramBotClient, Remind> Send = (client, r) =>
@@ -52,7 +52,7 @@ namespace NezabudkaHelperBot.Models.Commands
                 lock (AllReminds)
                 {
                     AllReminds.Add(remind.Date, remind);
-                }
+                } 
             }
             else
             {
