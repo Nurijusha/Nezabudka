@@ -14,7 +14,7 @@ namespace NezabudkaHelperBot.Models.Commands
 
         public override bool Contains(Message message)
         {
-            return message.Text == "Покажи все напоминания";
+            return message.Text.ToLower().Trim(' ') == "покажи все напоминания";
         }
 
         public override async Task Execute(Message message, TelegramBotClient botClient)
@@ -26,7 +26,7 @@ namespace NezabudkaHelperBot.Models.Commands
                 if (remind.Value.Message.Chat.Id == chatId)
                     listReminds.Add(remind.Key, remind.Value);
             }
-            if (Reminder.AllReminds.Count() == 0)
+            if (listReminds.Count() == 0)
             {
                 await botClient.SendTextMessageAsync(chatId, "Список пуст");
             }
