@@ -12,7 +12,7 @@ namespace NezabudkaHelperBot.Models.Commands
     {
         private static CancellationTokenSource tokenSource = new CancellationTokenSource();
         private static CancellationToken token = tokenSource.Token;
-        private readonly static TimeSpan rusTime = new TimeSpan(3, 0, 0);
+        public readonly static TimeSpan rusTime = new TimeSpan(3, 0, 0);
         public override string Name => "";
 
         public static SortedList<DateTime, Remind> AllReminds = new SortedList<DateTime, Remind>();

@@ -22,7 +22,8 @@ namespace NezabudkaHelperBot.Models.Commands
             Date = remind.Item2;
             Message = message;
             var chatId = message.Chat.Id;
-            botClient.SendTextMessageAsync(chatId, @"Напоминание добавлено в список");
+            if (Date >= (DateTime.UtcNow + Reminder.rusTime))
+                botClient.SendTextMessageAsync(chatId, @"Напоминание добавлено в список");
         }
 
         public static Tuple<string, DateTime> SplitMessage(string message)
